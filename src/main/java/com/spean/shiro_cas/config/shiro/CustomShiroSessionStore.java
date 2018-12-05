@@ -10,6 +10,11 @@ import org.pac4j.core.context.session.SessionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 该实现和io.buji.pac4j.context.ShiroSessionStore一致，但是修改了getTrackableSession和buildFromTrackableSession方法
+ * @author Administrator
+ *
+ */
 public class CustomShiroSessionStore implements SessionStore<J2EContext> {
 
 	 private final static Logger logger = LoggerFactory.getLogger(ShiroSessionStore.class);
