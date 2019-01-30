@@ -19,9 +19,7 @@ import javax.servlet.ServletResponse;
 public class CustomCallbackFilter extends CallbackFilter {
 
 	@Override
-	public void doFilter(ServletRequest servletRequest,
-			ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest servletRequest,ServletResponse servletResponse, FilterChain filterChain)throws IOException, ServletException {
 		super.doFilter(servletRequest, servletResponse, filterChain);
 	}
 	

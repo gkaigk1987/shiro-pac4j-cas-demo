@@ -13,9 +13,11 @@ public class CustomCasClient extends CasClient {
 	public CustomCasClient() {
 		super();
 	}
+	
 	public CustomCasClient(CasConfiguration configuration) {
 		super(configuration);
 	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
     public RedirectAction getRedirectAction(WebContext context) {
@@ -54,6 +56,5 @@ public class CustomCasClient extends CasClient {
         if (sessionStore.get(context, this.getName() + ATTEMPTED_AUTHENTICATION_SUFFIX) != null) {
             sessionStore.set(context, this.getName() + ATTEMPTED_AUTHENTICATION_SUFFIX, "");
         }
-
     }
 }

@@ -12,6 +12,7 @@ public class ShiroProvidedSessionStore extends ShiroSessionStore {
     public ShiroProvidedSessionStore(Session session) {
         this.session = session;
     }
+    
     @Override
     protected Session getSession(final boolean createSession) {
         return session;

@@ -7,13 +7,15 @@
     <title>Title</title>
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 </head>
+<body>
+	<h1>CAS Test Demo</h1>
+</body>
 <script type="text/javascript">
 	$.ajax({
-		url:'http://demo.foxitreader.cn:8081/userInfo',
-		success:function(data){
+		url:'/user/userInfo',
+		success : function(data){
 			console.log(data);
 		}
-		
 	});
 
 </script>

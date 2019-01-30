@@ -15,21 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spean.shiro_cas.util.ContextHolder;
 
 @RestController
+@RequestMapping("/user")
 public class HelloController {
 
 	@RequestMapping("hello")
-	public Object sayHi() {
-		
+	public String sayHi() {
 		Pac4jPrincipal p = ContextHolder.getPac4jPrincipal();
-		return "hello now:"+System.currentTimeMillis()+"  name="+p.getName();
+		return "hello now:" + System.currentTimeMillis() + "  name="+p.getName();
 	}
+	
 	@RequestMapping("userInfo")
-	public Object getUserInfo() {
+	public Map<String, Object> getUserInfo() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ret", 200);
 		Subject subject = SecurityUtils.getSubject();
 		PrincipalCollection pcs = subject.getPrincipals();
-		if(null !=pcs){
+		if(null != pcs){
 			Pac4jPrincipal p = pcs.oneByType(Pac4jPrincipal.class);
 			if(p!=null){
 				CommonProfile profile = p.getProfile();

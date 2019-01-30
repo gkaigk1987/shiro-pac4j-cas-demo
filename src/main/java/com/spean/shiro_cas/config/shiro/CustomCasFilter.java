@@ -26,104 +26,113 @@ import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.springframework.util.StringUtils;
 
+/**
+ * 不登录也可访问的连接配置该过滤器
+ * @author gaokai
+ *
+ */
 public class CustomCasFilter implements Filter {
 
-	 private SecurityLogic<Object, J2EContext> securityLogic;
+	private SecurityLogic<Object, J2EContext> securityLogic;
 
-	    private Config config;
+	private Config config;
 
-	    private String clients;
+	private String clients;
 
-	    private String authorizers;
+	private String authorizers;
 
-	    private String matchers;
+	private String matchers;
 
-	    private Boolean multiProfile;
+	private Boolean multiProfile;
 
-	    public CustomCasFilter() {
-	        securityLogic = new ShiroSecurityLogic<>();
-	    }
+	public CustomCasFilter() {
+		securityLogic = new ShiroSecurityLogic<>();
+	}
 
-	    @Override
-	    public void init(final FilterConfig filterConfig) throws ServletException {}
+	@Override
+	public void init(final FilterConfig filterConfig) throws ServletException {
+	}
 
-	    @SuppressWarnings("unchecked")
-		@Override
-	    public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
+	@SuppressWarnings("unchecked")
+	@Override
+	public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse,
+			final FilterChain filterChain) throws IOException, ServletException {
 
-	        assertNotNull("securityLogic", securityLogic);
-	        assertNotNull("config", config);
+		assertNotNull("securityLogic", securityLogic);
+		assertNotNull("config", config);
 
-	        final HttpServletRequest request = (HttpServletRequest) servletRequest;
-	        final HttpServletResponse response = (HttpServletResponse) servletResponse;
-	        final SessionStore<J2EContext> sessionStore = config.getSessionStore();
-	        final J2EContext context = new J2EContext(request, response, sessionStore != null ? sessionStore : ShiroSessionStore.INSTANCE);
-	        if(!SecurityUtils.getSubject().isAuthenticated()){
-	        	Collection<Cookie> cookies = context.getRequestCookies();
-		        Optional<Cookie> fid = cookies.stream().filter(cookie -> "fid".equals(cookie.getName())).findFirst();
-		        if(fid.isPresent()&& !StringUtils.isEmpty(fid.get().getValue())) {
-		        	//在其他项目中已经登录、跳去登录验证；
-		        	 securityLogic.perform(context, config, (ctx, profiles, parameters) -> {
+		final HttpServletRequest request = (HttpServletRequest) servletRequest;
+		final HttpServletResponse response = (HttpServletResponse) servletResponse;
+		final SessionStore<J2EContext> sessionStore = config.getSessionStore();
+		final J2EContext context = new J2EContext(request, response,
+				sessionStore != null ? sessionStore : ShiroSessionStore.INSTANCE);
+		if (!SecurityUtils.getSubject().isAuthenticated()) {
+			Collection<Cookie> cookies = context.getRequestCookies();
+			Optional<Cookie> fid = cookies.stream().filter(cookie -> "fid".equals(cookie.getName())).findFirst();
+			if (fid.isPresent() && !StringUtils.isEmpty(fid.get().getValue())) {
+				// 在其他项目中已经登录、跳去登录验证；
+				securityLogic.perform(context, config, (ctx, profiles, parameters) -> {
 
-		 	            filterChain.doFilter(request, response);
-		 	            return null;
+					filterChain.doFilter(request, response);
+					return null;
 
-		 	        }, J2ENopHttpActionAdapter.INSTANCE, clients, authorizers, matchers, multiProfile);
-		        }
-	        }
-	        // 不登录也能访问的页面
-	        filterChain.doFilter(request, response);
-	    }
+				}, J2ENopHttpActionAdapter.INSTANCE, clients, authorizers, matchers, multiProfile);
+			}
+		}
+		// 不登录也能访问的页面
+		filterChain.doFilter(request, response);
+	}
 
-	    @Override
-	    public void destroy() {}
+	@Override
+	public void destroy() {
+	}
 
-	    public SecurityLogic<Object, J2EContext> getSecurityLogic() {
-	        return securityLogic;
-	    }
+	public SecurityLogic<Object, J2EContext> getSecurityLogic() {
+		return securityLogic;
+	}
 
-	    public void setSecurityLogic(final SecurityLogic<Object, J2EContext> securityLogic) {
-	        this.securityLogic = securityLogic;
-	    }
+	public void setSecurityLogic(final SecurityLogic<Object, J2EContext> securityLogic) {
+		this.securityLogic = securityLogic;
+	}
 
-	    public Config getConfig() {
-	        return config;
-	    }
+	public Config getConfig() {
+		return config;
+	}
 
-	    public void setConfig(final Config config) {
-	        this.config = config;
-	    }
+	public void setConfig(final Config config) {
+		this.config = config;
+	}
 
-	    public String getClients() {
-	        return clients;
-	    }
+	public String getClients() {
+		return clients;
+	}
 
-	    public void setClients(final String clients) {
-	        this.clients = clients;
-	    }
+	public void setClients(final String clients) {
+		this.clients = clients;
+	}
 
-	    public String getAuthorizers() {
-	        return authorizers;
-	    }
+	public String getAuthorizers() {
+		return authorizers;
+	}
 
-	    public void setAuthorizers(final String authorizers) {
-	        this.authorizers = authorizers;
-	    }
+	public void setAuthorizers(final String authorizers) {
+		this.authorizers = authorizers;
+	}
 
-	    public String getMatchers() {
-	        return matchers;
-	    }
+	public String getMatchers() {
+		return matchers;
+	}
 
-	    public void setMatchers(final String matchers) {
-	        this.matchers = matchers;
-	    }
+	public void setMatchers(final String matchers) {
+		this.matchers = matchers;
+	}
 
-	    public Boolean getMultiProfile() {
-	        return multiProfile;
-	    }
+	public Boolean getMultiProfile() {
+		return multiProfile;
+	}
 
-	    public void setMultiProfile(final Boolean multiProfile) {
-	        this.multiProfile = multiProfile;
-	    }
+	public void setMultiProfile(final Boolean multiProfile) {
+		this.multiProfile = multiProfile;
+	}
 
 }

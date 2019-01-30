@@ -13,24 +13,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Pac4jConfig {
 
-	 /** 地址为：cas地址 */
+	/**
+	 * cas服务地址
+	 */
     @Value("${cas.server.url}")
     private String casServerUrl;
 
-    /** 地址为：验证返回后的项目地址：http://localhost:8081 */
+    /**
+     * 客户端项目地址
+     */
     @Value("${cas.project.url}")
     private String projectUrl;
 
     /** 相当于一个标志，可以随意 */
     @Value("${cas.client-name}")
     private String clientName;
+    
     /**
      *  pac4j配置
      * @param casClient
      * @param shiroSessionStore
      * @return
      */
-    @Bean()
+    @Bean
     public Config config(CasClient casClient, CustomShiroSessionStore shiroSessionStore) {
         Config config = new Config(casClient);
         config.setSessionStore(shiroSessionStore);

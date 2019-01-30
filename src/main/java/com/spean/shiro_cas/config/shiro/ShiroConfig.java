@@ -37,11 +37,15 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 @Configuration
 public class ShiroConfig {
 
-	/** 项目工程路径 */
+	/**
+	 * 客户端项目地址
+	 */
     @Value("${cas.project.url}")
     private String projectUrl;
 
-    /** 项目cas服务路径 */
+   /**
+    * CAS服务器地址
+    */
     @Value("${cas.server.url}")
     private String casServerUrl;
 
@@ -57,6 +61,7 @@ public class ShiroConfig {
         manager.setSessionManager(sessionManager);
         return manager;
     }
+    
     @Bean
     public CasRealm casRealm(){
         CasRealm realm = new CasRealm();
@@ -70,6 +75,7 @@ public class ShiroConfig {
         //realm.setAuthorizationCacheName("authorizationCache");
         return realm;
     }
+    
     /**
      * 使用 pac4j 的 subjectFactory
      * @return
@@ -101,8 +107,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/", "securityFilter");
         filterChainDefinitionMap.put("/application/**", "securityFilter");
         filterChainDefinitionMap.put("/index", "securityFilter");
-        filterChainDefinitionMap.put("/hello", "securityFilter");
-        filterChainDefinitionMap.put("/userInfo", "customCasFilter");
+        filterChainDefinitionMap.put("/user/hello", "securityFilter");
+        filterChainDefinitionMap.put("/user/userInfo", "customCasFilter");
         filterChainDefinitionMap.put("/callback", "callbackFilter");
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/**","anon");

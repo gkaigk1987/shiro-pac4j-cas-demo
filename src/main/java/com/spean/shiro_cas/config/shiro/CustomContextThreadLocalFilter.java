@@ -21,17 +21,15 @@ public class CustomContextThreadLocalFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
-			FilterChain filterChain) throws IOException, ServletException {
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,FilterChain filterChain) throws IOException, ServletException {
 		try {
 			Subject subject = SecurityUtils.getSubject();
 			PrincipalCollection pcs = subject.getPrincipals();
-			if(null !=pcs){
+			if(null != pcs){
 				Pac4jPrincipal p = pcs.oneByType(Pac4jPrincipal.class);
 				ContextHolder.setPac4jPrincipal(p);
 			}
@@ -44,7 +42,6 @@ public class CustomContextThreadLocalFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 
